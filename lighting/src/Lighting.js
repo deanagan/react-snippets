@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react';
 
-export const Lighting = () => {
-  const [isOn, setOn] = useState(false);
+export const Lighting = ({initial}) => {
+  const [isOn, setOn] = useState(initial);
   const [toggleCount, setToggleCount] = useState(0);
 
   useEffect(() => {
     document.title = `You clicked ${toggleCount} times`;
-  });
+  }, [toggleCount]);
+
+  useEffect(() => {
+    setOn(initial);
+  }, [initial]);
 
   const toggleHandler = () => {
     setOn(!isOn);

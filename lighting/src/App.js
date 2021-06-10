@@ -4,7 +4,8 @@ import { Lighting } from './Lighting';
 function App() {
   return (
     <div className="App">
-      <Lighting />
+      <h1>Lighting App</h1>
+      <Lighting initial={false} />
     </div>
   );
 }
