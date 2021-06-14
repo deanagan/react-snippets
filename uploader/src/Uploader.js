@@ -12,13 +12,32 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export const Uploader = () => {
     const [files, setFiles] = useState([]);
+    const loadExisting = () => {
+      console.log("Load existing images from the server");
+    }
+    const onDeleteImage = (err, file) => {
+      console.log("Deleting image", err, file)
+    }
+    const onRevert = (uniqueFileId, load, error) => {
+      console.log(uniqueFileId, load, error)
+
+      load();
+    }
     return (
       <div className="Uploader">
         <FilePond
           files={files}
           allowReorder={true}
-          allowMultiple={true}
+          allowMultiple={false}
+          // TODO: Set to false and allow button click to submit
+          instantUpload={true}
+          maxFiles={1}
           onupdatefiles={setFiles}
+          revert={onDeleteImage}
+          oninit={ () => loadExisting() }
+          server="http://localhost:1337/upload"
+          remove={onRevert}
+          name="files"
           labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
         />
       </div>
