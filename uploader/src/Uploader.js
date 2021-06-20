@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FilePond, registerPlugin } from 'react-filepond'
 
 import 'filepond/dist/filepond.min.css'
@@ -12,6 +12,8 @@ registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
 export const Uploader = () => {
     const [files, setFiles] = useState([]);
+    const [ids, setId] = useState([]);
+
     const loadExisting = () => {
       console.log("Load existing images from the server");
     }
@@ -23,9 +25,10 @@ export const Uploader = () => {
       console.log("on");
       load();
     }
-
+    useEffect(()=> console.log(ids), [ids]);
     const onLoad = (res) => {
-      console.log(res);
+      const newId = JSON.parse(res)[0].id;
+      setId(currentIds => [...currentIds, newId]);
     }
 
     return (
@@ -43,7 +46,7 @@ export const Uploader = () => {
           // TODO: Set to false and allow button click to submit
           instantUpload={true}
           maxFiles={1}
-          onupdatefiles={(setFiles)}
+          onupdatefiles={setFiles}
           onload={onLoad}
           revert={onDeleteImage}
           oninit={ () => loadExisting() }
