@@ -20,22 +20,34 @@ export const Uploader = () => {
     }
     const onRevert = (uniqueFileId, load, error) => {
       console.log(uniqueFileId, load, error)
-
+      console.log("on");
       load();
     }
+
+    const onLoad = (res) => {
+      console.log(res);
+    }
+
     return (
       <div className="Uploader">
         <FilePond
           files={files}
           allowReorder={true}
           allowMultiple={false}
+          server = {{
+            process: {
+              url: "http://localhost:1337/upload",
+              onload:onLoad
+            }
+          }}
           // TODO: Set to false and allow button click to submit
           instantUpload={true}
           maxFiles={1}
-          onupdatefiles={setFiles}
+          onupdatefiles={(setFiles)}
+          onload={onLoad}
           revert={onDeleteImage}
           oninit={ () => loadExisting() }
-          server="http://localhost:1337/upload"
+          // server="http://localhost:1337/upload"
           remove={onRevert}
           name="files"
           labelIdle='Drag & Drop your files or <span class="filepond--label-action">Browse</span>'
