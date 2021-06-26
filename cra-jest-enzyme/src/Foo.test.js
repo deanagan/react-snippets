@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount, render } from 'enzyme';
 
 import Foo from './Foo';
-import { FooFunc } from './Foo';
+
 
 describe('A suite', function() {
   it('should render without throwing an error', function() {
@@ -27,7 +27,7 @@ describe('A suite', function() {
     const spied = jest.spyOn(wrapper.instance(), 'isValid');
     spied.mockReturnValue(false);
     //expect(x.instance()).to.be.instanceOf(Foo);
-    console.log(wrapper.text());
+  //  console.log(wrapper.text());
     //expect(x.instance().text()).toEqual('BarBaz');
   });
 
