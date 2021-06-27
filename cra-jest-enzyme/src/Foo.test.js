@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow, mount, render } from 'enzyme';
 
-import Foo from './Foo';
+import Foo, { FooFunc } from './Foo';
 
 
 describe('A suite', function() {
@@ -21,28 +21,18 @@ describe('A suite', function() {
     expect(render(<Foo />).text()).toEqual('Bar');
   });
 
-  it('should return false', function() {
+  it('Foo mock internal method should return false', function() {
+      const obj = mount(<Foo />);
+      const isValid = jest.spyOn(obj.instance(), 'isValid').mockReturnValue(false);
 
-    const wrapper = shallow(<Foo />);
-    const spied = jest.spyOn(wrapper.instance(), 'isValid');
-    spied.mockReturnValue(false);
-    //expect(x.instance()).to.be.instanceOf(Foo);
-  //  console.log(wrapper.text());
-    //expect(x.instance().text()).toEqual('BarBaz');
+      obj.instance().forceUpdate();
+      expect(obj.text()).toEqual('BarBaz');
+      expect(isValid).toHaveBeenCalled();
+  });
+
+  it('FooFunc render', function() {
+    expect(render(<FooFunc />).text()).toEqual('Bar');
   });
 
 
-//   it('should return false func app', function() {
-//     let x = mount(<FooFunc/>);
-//     expect(x.text()).toEqual('Bar');
-//   });
-
-  // it('should return false func app2', function() {
-  //   let x = mount(<FooFunc/>);
-  //   var tempProps = {...x.props};
-  //   tempProps.isValid = jest.fn().mockReturnValue(false);
-  //   //jest.spyOn('FooFunc', 'isValid');
-  //   x.update();
-  //   expect(x.text()).toEqual('BarBaz');
-  // });
 });
