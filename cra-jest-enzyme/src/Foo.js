@@ -1,5 +1,5 @@
-import React, { PropTypes } from 'react';
-
+import React, { useState, useEffect } from 'react';
+import { getReturn } from './ReturnHelp';
 const propTypes = {};
 
 const defaultProps = {};
@@ -29,6 +29,24 @@ export const FooFunc = () => {
     </div>
   );
 }
+
+export const Lighting = () => {
+  const [isOn, setOn] = useState(getReturn(3, 1) > 3);
+
+  const toggleHandler = () => {
+    setOn(!isOn);
+  }
+
+  return (
+    <div>
+    <h1>{isOn ? "ON": "OFF"} </h1>
+    <button id='button1' onClick={toggleHandler}>Toggle Button</button>
+
+    </div>
+  );
+};
+
+
 
 Foo.propTypes = propTypes;
 Foo.defaultProps = defaultProps;

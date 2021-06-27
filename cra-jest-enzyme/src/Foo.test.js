@@ -1,7 +1,11 @@
 import React from 'react';
 import { shallow, mount, render } from 'enzyme';
 
-import Foo, { FooFunc } from './Foo';
+import Foo, { FooFunc, Lighting } from './Foo';
+
+jest.mock('./ReturnHelp', () => {
+  return { getReturn: (x, y) => x - y };
+});
 
 
 describe('A suite', function() {
@@ -34,5 +38,9 @@ describe('A suite', function() {
     expect(render(<FooFunc />).text()).toEqual('Bar');
   });
 
+  it('Lighting is OFF by default', function() {
+    const lighting = render(<Lighting/>);
+    expect(lighting.text().split(' ')[0]).toEqual('OFF');
+  });
 
 });
