@@ -12,15 +12,15 @@ function App() {
   return (
     <div className="App">
       <label htmlFor='cb1'>Accept: </label>
-      <input id='cb1' type="checkbox" checked={isAccepted} onClick={() => setIsAccepted(!isAccepted)}/>
+      <input id='cb1' type="checkbox" checked={isAccepted} onChange={() => setIsAccepted(!isAccepted)}/>
       <br />
 
       <label htmlFor='cb2'>Signed: </label>
-      <input id='cb2' type="checkbox" checked={isSigned} onClick={() => setIsSigned(!isSigned)}/>
+      <input id='cb2' type="checkbox" checked={isSigned} onChange={() => setIsSigned(!isSigned)}/>
       <br />
 
       <label htmlFor='cb3'>Sealed: </label>
-      <input id='cb3' type="checkbox" checked={isSealed} onClick={() => setIsSealed(!isSealed)}/>
+      <input id='cb3' type="checkbox" checked={isSealed} onChange={() => setIsSealed(!isSealed)}/>
       <br />
 
       <label htmlFor='tb1'>Passcode: </label>
