@@ -30,7 +30,7 @@ function App() {
 
       <Info isAccepted={isAccepted} isSigned={isSigned} isSealed={isSealed}  approved={approved}/>
       <br />
-      <InfoMemoized isAccepted={isAccepted} isSigned={isSigned} isSealed={isSealed} approved={approved}/>
+      {/* <InfoMemoized isAccepted={isAccepted} isSigned={isSigned} isSealed={isSealed} approved={approved}/> */}
     </div>
   );
 }
