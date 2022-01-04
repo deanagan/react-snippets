@@ -1,62 +1,11 @@
-import { useMemo, memo, useEffect, useState, useRef } from "react";
+import { useMemo, useEffect, useState } from "react";
 import styled from "styled-components";
-import { isEqual } from "lodash";
 import "./index.css";
-import { initColors } from "./Colors";
 import { nbaPlayers } from "./datalight";
+import LoadingDots from "./Dots";
+import TopPlayers from "./TopPlayers";
+import { StatSelectorDropDown } from "./StatSelector";
 
-const Dropbtn = styled.div`
-  display: inline-block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-`;
-
-const DropDownContent = styled.div`
-  display: block;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-`;
-
-const DropDownItem = styled.a`
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-  cursor: pointer;
-  &:hover {
-    background-color: #13795a;
-  }
-`;
-
-const DropDownLi = styled.li`
-  display: inline-block;
-  &:hover {
-    background-color: gray;
-  }
-`;
-
-export const StyledTable = styled.table`
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 20%;
-  margin-left: 40%;
-  border: 1px solid black;
-  th,
-  td {
-    text-align: left;
-    padding: 16px;
-    border: 1px solid black;
-  }
-  tr:nth-child(even) {
-    background-color: yellow;
-  }
-`;
 
 const Button = styled.button`
   margin: 5px;
@@ -67,82 +16,137 @@ const ColoredHeader = styled.h1`
   color: ${(props) => props.color};
 `;
 
+const validStatOptions = [
+  {
+    Index: 0,
+    Value: {
+      Label: "Points",
+      Column: "PTS",
+    },
+  },
+  {
+    Index: 1,
+    Value: {
+      Label: "Steals",
+      Column: "STL",
+    },
+  },
+  {
+    Index: 2,
+    Value: {
+      Label: "Rebounds",
+      Column: "TRB",
+    },
+  },
+  {
+    Index: 3,
+    Value: {
+      Label: "Assists",
+      Column: "AST",
+    },
+  },
+  {
+    Index: 4,
+    Value: {
+      Label: "Blocks",
+      Column: "BLK",
+    },
+  },
+  {
+    Index: 5,
+    Value: {
+      Label: "Three Point Made",
+      Column: "3P",
+    },
+  },
+];
+
+function getAllPlayers() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(nbaPlayers);
+    }, 2000);
+  });
+}
+
 export default function App() {
-  const [stat, setStat] = useState({ category: "PTS", top: 5 });
+  const [stat, setStat] = useState({ category: "PTS", top: 10 });
+  const [isLoading, setIsLoading] = useState(true);
   const setStatToPoints = () => setStat({ ...stat, category: "PTS" });
   const setStatToAssists = () => setStat({ ...stat, category: "AST" });
   const setStatToRebounds = () => setStat({ ...stat, category: "TRB" });
-  const setToOtherStat = (stat) => setStat({ ...stat, category: stat });
- // const players = nbaPlayers.map(p => ({ Name: p['Player'], Stat: p[stat] } )).sort((a, b) => b.Stat - a.Stat).slice(0, 5);
-  const statColumns = Object.keys(nbaPlayers[0]);
+  const setToOtherStat = (newStat) => setStat({ ...stat, category: newStat });
+  const incTopCount = () =>
+    setStat({ ...stat, top: Math.min(stat.top + 1, 50) });
+  const decTopCount = () =>
+    setStat({ ...stat, top: Math.max(0, stat.top - 1) });
+
+  const [playerData, setPlayerData] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getAllPlayers();
+      setPlayerData(data);
+      setIsLoading(false);
+    }
+    setIsLoading(true);
+    fetchData();
+  }, []);
+
+  const topPlayers = useMemo(() => {
+    let players = [];
+    console.log("Recalculating top players");
+    if (!isLoading && playerData.length > 0) {
+      const availablePlayers = playerData.map((p) => ({
+        player: p["Player"],
+        stat: p[stat.category],
+      }));
+      players = availablePlayers
+        .sort((a, b) => b.stat - a.stat)
+        .slice(0, stat.top);
+    }
+    return players;
+  }, [isLoading, stat.category, stat.top, playerData]);
+
+  // const [topPlayers, setTopPlayers] = useState([]);
+
+  // useEffect(() => {
+  //   console.log("Recalculating top players");
+  //   const availablePlayers = playerData.map((p) => ({
+  //     player: p["Player"],
+  //     stat: p[stat.category],
+  //   }));
+  //   const players = availablePlayers
+  //     .sort((a, b) => b.stat - a.stat)
+  //     .slice(0, stat.top);
+  //   setTopPlayers(players);
+
+  // }, [stat.category, stat.top, playerData]);
+
   return (
     <div className="App">
-      <ColoredHeader color={'blue'}>1997-1998 NBA Season Statistics</ColoredHeader>
+      <ColoredHeader color={"blue"}>
+        1997-1998 NBA Season Statistics
+      </ColoredHeader>
+      <Button onClick={incTopCount}>Increase Top</Button>
+      <Button onClick={decTopCount}>Decrease Top</Button>
       <Button onClick={setStatToPoints}>Show Points</Button>
       <Button onClick={setStatToRebounds}>Show Rebounds</Button>
       <Button onClick={setStatToAssists}>Show Assists</Button>
-      <ColoredHeader color={'black'}> Current Stat: {stat.category}</ColoredHeader>
-      <StatSelectorDropDown currentStat={stat.category} setStatCallback={setToOtherStat} statColumns={statColumns}/>
-    </div>
-  );
-}
+      <ColoredHeader color={"black"}>
+        Current Stat: {stat.category}
+      </ColoredHeader>
 
-function StatSelectorDropDown({ currentStat, setStatCallback, statColumns }) {
-  const [currentEntry, setCurrentEntry] = useState("Pick Stat");
-  const [clickedOutside, setClickedOutside] = useState(true);
-  const currentComponentRef = useRef(null);
-  const [choices, setChoices] = useState(statColumns);
-
-  // const availableColors = useMemo(() => initColors.filter(c => !c.color.toLowerCase().includes(currentColor));
-
-  // useEffect(() => {
-  //   setChoices(availableColors);
-  // }, [availableColors, currentColor]);
-
-  // useEffect(() => {
-  //   const players = nbaPlayers.keys;
-  //   setChoices(players);
-  // }, [currentStat]);
-
-  const handleClickOutside = (e) => {
-    const current = currentComponentRef.current;
-    if (!current?.contains(e.target)) {
-      setClickedOutside(true);
-    }
-  };
-
-  const onSelectHandler = (entry) => {
-    setCurrentEntry(entry);
-    setStatCallback(entry);
-  };
-
-  useEffect(() => {
-    console.log("mounted");
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleClickInside = () => setClickedOutside(false);
-  return (
-    <div>
-      <DropDownLi>
-        <Dropbtn onClick={handleClickInside}>{currentEntry}</Dropbtn>
-        {!clickedOutside ? (
-          <DropDownContent ref={currentComponentRef}>
-            {statColumns.map((pe) => (
-              <DropDownItem
-                key={pe}
-                onClick={() => {
-                  onSelectHandler(pe);
-                  setClickedOutside(true);
-                }}
-              >
-                {pe}
-              </DropDownItem>
-            ))}
-          </DropDownContent>
-        ) : null}
-      </DropDownLi>
+      {isLoading ? (
+        <LoadingDots length={7} />
+      ) : (
+        <>
+          <TopPlayers topPlayers={topPlayers} category={stat.category} />
+          <StatSelectorDropDown
+            setStatCallback={setToOtherStat}
+            validStatOptions={validStatOptions}
+          />
+        </>
+      )}
     </div>
   );
 }
