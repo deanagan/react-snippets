@@ -29,14 +29,14 @@ export const StyledTable = styled.table`
 const TopColors = ({ colors }) => {
 
   useEffect(() => {
-    console.log("Top colors re-rendering");
+    console.log("Top colors table re-rendering");
   }, [colors]);
 
   return (
     <StyledTable>
       <TableHeader>
         <TableRow>
-          <TableHeaderCell>Favorite Colors</TableHeaderCell>
+          <TableHeaderCell>Top Colors</TableHeaderCell>
         </TableRow>
       </TableHeader>
       <TableBody>
