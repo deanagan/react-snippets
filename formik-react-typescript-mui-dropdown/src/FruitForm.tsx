@@ -1,6 +1,11 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Checkbox, MenuItem } from '@mui/material';
+import { styled } from '@mui/system';
+
+const StyledField = styled(Field)({
+  width: '300px', // Adjust width as needed
+});
 
 const options = [
   { value: 1, label: 'Apple' },
@@ -13,34 +18,33 @@ const options = [
 const FruitForm = () => {
   return (
     <Formik
-      initialValues={{ fruit: { value: 0, label: '' }, showBerries: true }}
+      initialValues={{ fruit: '', showBerries: true }}
       onSubmit={(values) => {
         console.log(values);
       }}
     >
       {({ values, setFieldValue }) => (
         <Form>
-          <Field
+          <StyledField
             id='fruit-select'
             name='fruit'
             component={TextField}
             select
+            value={''}
             label='Select Fruit'
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setFieldValue('fruit', e.target.value);
             }}
           >
-            <MenuItem key={0} value=''>
-              -Select-
-            </MenuItem>
+            <MenuItem value=''>Select One</MenuItem>
             {options
               .filter((option) => !values.showBerries || option.value <= 3)
               .map((option) => (
-                <MenuItem key={option.value} value={option.value}>
+                <MenuItem key={option.value} value={option.value.toString()}>
                   {option.label}
                 </MenuItem>
               ))}
-          </Field>
+          </StyledField>
           <Field
             as={Checkbox}
             id='show-berries-checkbox'
