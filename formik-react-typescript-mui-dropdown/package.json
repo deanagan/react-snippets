@@ -1,0 +1,45 @@
+{
+  "name": "formik-react-typescript-mui-dropdown",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --mode development --config webpack.config.js",
+    "build": "webpack --mode production --config webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/material": "^5.15.21",
+    "formik": "^2.4.6"
+  },
+  "devDependencies": {
+    "@cfaester/enzyme-adapter-react-18": "^0.8.0",
+    "@types/enzyme": "^3.10.18",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.9",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "css-loader": "^7.1.2",
+    "enzyme": "^3.11.0",
+    "html-webpack-plugin": "^5.6.0",
+    "prettier": "^3.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.5.3",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/setupTests.ts"
+    ]
+  }
+}
