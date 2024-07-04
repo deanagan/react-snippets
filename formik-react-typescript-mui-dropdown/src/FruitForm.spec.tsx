@@ -3,8 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import FruitForm from './FruitForm';
 
 describe('FruitForm', () => {
-    let wrapper: ReactWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
-
+  let wrapper: ReactWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
 
   beforeEach(() => {
     wrapper = mount(<FruitForm />);
@@ -28,7 +27,9 @@ describe('FruitForm', () => {
 
   it('hides Blueberry and Strawberry when checkbox is unticked', () => {
     // Simulate checkbox untick
-    wrapper.find('#hide-fruits-checkbox').simulate('change', { target: { checked: false } });
+    wrapper
+      .find('#hide-fruits-checkbox')
+      .simulate('change', { target: { checked: false } });
 
     // Verify that Blueberry and Strawberry are hidden
     const blueberryOption = wrapper.find('MenuItem[value="4"]');
@@ -40,6 +41,8 @@ describe('FruitForm', () => {
   // Add more test cases as needed
 
   afterEach(() => {
-    wrapper.unmount();
+    if (wrapper) {
+      wrapper.unmount();
+    }
   });
 });

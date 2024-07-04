@@ -1,20 +1,19 @@
 {
-    "compilerOptions": {
-      "target": "es5",
-      "lib": ["dom", "esnext"],
-      "module": "esnext",
-      "strict": true,
-      "jsx": "react",
-      "esModuleInterop": true,
-      "skipLibCheck": true,
-      "forceConsistentCasingInFileNames": true,
-      "moduleResolution": "node",
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "noEmit": false,
-      "types": ["node"],
-      "outDir": "./dist"
-    },
-    "include": ["src", "node_modules/@types"]
-  }
-  
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["dom", "esnext"],
+    "module": "esnext",
+    "strict": true,
+    "jsx": "react",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": false,
+    "types": ["node"],
+    "outDir": "./dist"
+  },
+  "include": ["src", "node_modules/@types"]
+}
