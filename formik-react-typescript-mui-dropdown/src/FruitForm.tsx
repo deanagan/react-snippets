@@ -1,6 +1,6 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { TextField, Checkbox, MenuItem } from '@mui/material';
+import { TextField, Checkbox, MenuItem, FormControlLabel } from '@mui/material';
 import { styled } from '@mui/system';
 
 export const StyledField = styled(Field)({
@@ -14,6 +14,14 @@ const options = [
   { value: 4, label: 'Blueberry' },
   { value: 5, label: 'Strawberry' },
 ];
+
+type FieldType = {
+  field: {
+    name: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<any>) => void;
+  };
+};
 
 const FruitForm = () => {
   return (
@@ -45,15 +53,23 @@ const FruitForm = () => {
                 </MenuItem>
               ))}
           </StyledField>
-          <Field
-            as={Checkbox}
-            id='hide-berries-checkbox'
-            name='hideBerries'
-            label='Hide Berries'
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setFieldValue('hideBerries', e.target.checked);
-            }}
-          />
+          <Field name='hideBerries'>
+            {({ field }: FieldType) => (
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    id='hide-berries-checkbox'
+                    {...field}
+                    checked={values.hideBerries}
+                    onChange={(e) =>
+                      setFieldValue('hideBerries', e.target.checked)
+                    }
+                  />
+                }
+                label='Hide Berries'
+              />
+            )}
+          </Field>
           <button type='submit'>Submit</button>
         </Form>
       )}
