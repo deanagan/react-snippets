@@ -1,6 +1,7 @@
 # React Snippets
 
 This is a react snippets repo that contains small pieces of code to demonstrate various things.
+Note that each subfolder is a standalone react application
 
 ## Contents
 1. formik-react-typescript-mui-dropdown
