@@ -38,11 +38,11 @@ const FruitForm = () => {
             name='fruit'
             component={TextField}
             select
-            value={''}
             label='Select Fruit'
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setFieldValue('fruit', e.target.value);
             }}
+            value={values.fruit}
           >
             <MenuItem value=''>Select One</MenuItem>
             {options
