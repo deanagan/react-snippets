@@ -1,10 +1,10 @@
 import React from 'react';
-import { mount, ReactWrapper } from 'enzyme';
-import FruitForm, { StyledField } from './FruitForm';
-import { MenuItem } from '@mui/material';
+import { mount } from 'enzyme';
+import FruitForm from './FruitForm';
+import { type ReactWrapperType } from './types';
 
 describe('FruitForm', () => {
-  let wrapper: ReactWrapper<any, Readonly<{}>, React.Component<{}, {}, any>>;
+  let wrapper: ReactWrapperType;
 
   beforeEach(() => {
     wrapper = mount(<FruitForm />);
@@ -20,6 +20,7 @@ describe('FruitForm', () => {
     // and then simulate the mousedown event sending the button:0 in the event object
 
     dropdown.simulate('mousedown', { button: 0 }); // button: 0 is required
+
     //dropdown.simulate('click'); ===>> Does not work
     wrapper.update();
 
@@ -30,6 +31,15 @@ describe('FruitForm', () => {
     expect(items).toHaveLength(6);
     expect(items.at(1).prop('data-value')).toEqual('1');
     expect(items.at(1).text()).toEqual('Apple');
+
+    // Select 3rd item
+    items.at(3).simulate('click');
+    wrapper.update();
+    const dropdownValue = wrapper.find(
+      'div[role="combobox"][id="fruit-select"]',
+    );
+
+    expect(dropdownValue.text()).toBe('Grapes');
   });
 
   it('hides Blueberry and Strawberry when checkbox is unticked', () => {
@@ -44,8 +54,6 @@ describe('FruitForm', () => {
     expect(blueberryOption.exists()).toBeFalsy();
     expect(strawberryOption.exists()).toBeFalsy();
   });
-
-  // Add more test cases as needed
 
   afterEach(() => {
     if (wrapper) {
