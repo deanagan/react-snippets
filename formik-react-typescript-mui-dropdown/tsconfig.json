@@ -4,6 +4,7 @@
     "lib": ["dom", "esnext"],
     "module": "esnext",
     "strict": true,
+    "sourceMap": true,
     "jsx": "react",
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -13,7 +14,7 @@
     "isolatedModules": true,
     "noEmit": false,
     "types": ["node"],
-    "outDir": "./dist"
+    "outDir": "out"
   },
   "include": ["src", "node_modules/@types"]
 }
