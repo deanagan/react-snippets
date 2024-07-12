@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Checkbox, MenuItem, FormControlLabel } from '@mui/material';
 import { styled } from '@mui/system';
@@ -23,7 +23,42 @@ type FieldType = {
   };
 };
 
+const simulateFetch = (url: string, delay: number = 1000) => {
+  return new Promise<{ fruitName: string; hideBerries: boolean }>(
+    (resolve, reject) => {
+      setTimeout(() => {
+        return { fruitName: 'banana', hideBerries: false };
+      }, delay);
+    },
+  );
+};
+
 const FruitForm = () => {
+  const [initialValues, setInitialValues] = useState({
+    fruit: '',
+    hideBerries: false,
+  });
+
+  useEffect(() => {
+    // Simulate an API call to fetch initial values
+    const fetchInitialValues = async () => {
+      try {
+        const response = await simulateFetch(
+          'https://api.example.com/initial-values',
+        );
+        const { fruitName, hideBerries } = response;
+        setInitialValues({
+          fruit: fruitName,
+          hideBerries,
+        });
+      } catch (error) {
+        console.error('Error fetching initial values:', error);
+      }
+    };
+
+    fetchInitialValues();
+  }, []);
+
   return (
     <Formik
       initialValues={{ fruit: '', hideBerries: false }}
