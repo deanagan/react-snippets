@@ -68,7 +68,10 @@ const FruitForm = () => {
 
   const validationSchema = Yup.object().shape({
     fruit: Yup.string().required('Fruit is required'),
-    textbox: Yup.string().required('This field is required'), // New validation rule
+    textbox: Yup.number()
+      .required('This field is required')
+      .min(1, 'Must be at least 1')
+      .max(100, 'Must be at most 100'), // New validation rule
   });
 
   return (
@@ -124,7 +127,9 @@ const FruitForm = () => {
               id='textbox'
               name='textbox'
               component={TextField}
-              label='Enter Text'
+              type='number'
+              label='Enter Number (1-100)'
+              inputProps={{ min: 1, max: 100 }}
             />
             <StyledErrorMessage name='textbox' component='div' />
           </div>
