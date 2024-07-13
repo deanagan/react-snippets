@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { TextField, Checkbox, MenuItem, FormControlLabel } from '@mui/material';
 import { styled } from '@mui/system';
+import * as Yup from 'yup';
 
 export const StyledField = styled(Field)({
   width: '300px', // Adjust width as needed
+});
+
+export const StyledErrorMessage = styled(ErrorMessage)({
+  color: 'red',
 });
 
 const options = [
@@ -27,7 +32,7 @@ const simulateFetch = (url: string, delay: number = 1000) => {
   return new Promise<{ fruitName: string; hideBerries: boolean }>(
     (resolve, reject) => {
       setTimeout(() => {
-        return { fruitName: 'banana', hideBerries: false };
+        resolve({ fruitName: 'banana', hideBerries: false });
       }, delay);
     },
   );
@@ -37,6 +42,7 @@ const FruitForm = () => {
   const [initialValues, setInitialValues] = useState({
     fruit: '',
     hideBerries: false,
+    textbox: '', // New textbox field
   });
 
   useEffect(() => {
@@ -50,6 +56,7 @@ const FruitForm = () => {
         setInitialValues({
           fruit: fruitName,
           hideBerries,
+          textbox: '', // New textbox field
         });
       } catch (error) {
         console.error('Error fetching initial values:', error);
@@ -59,12 +66,19 @@ const FruitForm = () => {
     fetchInitialValues();
   }, []);
 
+  const validationSchema = Yup.object().shape({
+    fruit: Yup.string().required('Fruit is required'),
+    textbox: Yup.string().required('This field is required'), // New validation rule
+  });
+
   return (
     <Formik
-      initialValues={{ fruit: '', hideBerries: false }}
+      initialValues={initialValues}
+      validationSchema={validationSchema}
       onSubmit={(values) => {
         console.log(values);
       }}
+      enableReinitialize
     >
       {({ values, setFieldValue }) => (
         <Form>
@@ -105,6 +119,15 @@ const FruitForm = () => {
               />
             )}
           </Field>
+          <div>
+            <StyledField
+              id='textbox'
+              name='textbox'
+              component={TextField}
+              label='Enter Text'
+            />
+            <StyledErrorMessage name='textbox' component='div' />
+          </div>
           <button type='submit'>Submit</button>
         </Form>
       )}

@@ -16,7 +16,8 @@
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.21",
     "@mui/system": "^5.15.20",
-    "formik": "^2.4.6"
+    "formik": "^2.4.6",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@cfaester/enzyme-adapter-react-18": "^0.8.0",
