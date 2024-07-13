@@ -91,7 +91,7 @@ const FruitForm = () => {
       onSubmit={(values) => {
         console.log(values);
       }}
-      enableReinitialize
+      // enableReinitialize
     >
       {({ values, setFieldValue }) => (
         <Form>
