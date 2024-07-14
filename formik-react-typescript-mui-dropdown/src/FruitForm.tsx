@@ -4,9 +4,11 @@ import { TextField, Checkbox, MenuItem, FormControlLabel } from '@mui/material';
 import { styled } from '@mui/system';
 import * as Yup from 'yup';
 import validationSchema from './fruitValidationSchema';
+import { ENTER_NUMBER_FORMAT } from './constants';
 
 export const StyledField = styled(Field)({
-  width: '300px', // Adjust width as needed
+  margin: 10,
+  width: 300,
 });
 
 export const StyledErrorMessage = styled(ErrorMessage)({
@@ -142,7 +144,14 @@ const FruitForm = () => {
               name='textbox'
               component={TextField}
               type='number'
-              label={`Enter Number (1-${maxWeightMap[values.fruit]})`}
+              label={
+                values.fruit !== ''
+                  ? ENTER_NUMBER_FORMAT.replace(
+                      '${0}',
+                      maxWeightMap[values.fruit].toString(),
+                    )
+                  : 'Select a fruit first'
+              }
               inputProps={{
                 min: 1,
                 max: maxWeightMap[values.fruit],
